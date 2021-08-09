@@ -9,8 +9,8 @@ const int backDistMax = 50;
 const int Movetime = 1000;
 
 // motor 1
-const int enA = 2;
-const int inA1 = 3;
+const int enA = 3;
+const int inA1 = 2;
 const int inA2 = 4;
 
 // motor 2
@@ -18,11 +18,6 @@ const int enB = 5;
 const int inB1 = 6;
 const int inB2 = 7;
 
-void turnServo(int angle_1, int angle_2, Servo mys){
-  for (int pos = angle_1; pos <= angle_2; pos += 1) {
-      mys.write(pos);
-      delay(15);
-    }
 }
 
 float realdis(int trigpin, int echopin){//ultrasonic function to measure distance 
@@ -50,12 +45,25 @@ void servo_scan(int leftangle, float leftdist, int backangle, float backdist, in
   rightdist = realdis(trig, echo);
   Serial.print("Right distance = ");
   Serial.println(rightdist);
+} 
+  
+void move_backwards(int directionpinforward,int directionpin2,int speed){
+  digitalWrite(directionpinforward,LOW);
+  digitalWrite(directionpin2,HIGH);
+  analogWrite(speed,255);
 }
+
 
 void setup() {
   scanservo.attach(3);
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
+  pinMode(enA,OUTPUT);
+  pinMode(inA1,OUTPUT);
+  pinMode(inA2,OUTPUT);
+  pinMode(enB,OUTPUT);
+  pinMode(inB1,OUTPUT);
+  pinMode(inB2,OUTPUT);
   Serial.begin(9600);
 }
 
