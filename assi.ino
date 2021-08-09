@@ -9,8 +9,8 @@ const int backDistMax = 50;
 const int Movetime = 1000;
 
 // motor 1
-const int enA = 2;
-const int inA1 = 3;
+const int enA = 3;
+const int inA1 = 2;
 const int inA2 = 4;
 
 // motor 2
@@ -70,10 +70,17 @@ void loop() {
   while(done = 0){
     if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax)
       // go back
-    else if(backdist < backDistMax)
+    else if(backdist < backDistMax){
       // stop
       done = 1;
-    else if(rightdist > side
+      }
+    else if(rightdist > sideDistMax)
+      //go back & right
+    else if(leftdist > sideDistMax)
+      // go back & left
+    else{
+      //go back
+    }
   }
   for (int pos = 180; pos >= 0; pos -= 1) {
     scanservo.write(pos);
