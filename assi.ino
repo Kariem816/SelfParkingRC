@@ -15,13 +15,13 @@ delay(60);
 void servo_scan(int leftangle,float leftdist,int backangle,float backdist,int rightangle,float rightdist,Servo mys){//function to set the servo for 3 entered angles to measure each distance 
   mys.write(leftangle);
   delay(60);
-  leftdist = realdis(2,A1);
+  leftdist = realdis(trig, echo);
   mys.write(backangle);
   delay(60);
-  backdist = realdis(2,A1);
+  backdist = realdis(trig, echo);
   mys.write(rightangle);
   delay(60);
-  rightdist = realdis(2,A1);
+  rightdist = realdis(trig, echo);
   }
 
 void setup() {
