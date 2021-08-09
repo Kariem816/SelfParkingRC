@@ -68,18 +68,25 @@ void loop() {
   delay(60);
 
   while(done = 0){
-    if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax)
+    if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax){
       // go back
+      break;
+      }
     else if(backdist < backDistMax){
       // stop
       done = 1;
       }
-    else if(rightdist > sideDistMax)
+    else if(rightdist > sideDistMax){
       //go back & right
-    else if(leftdist > sideDistMax)
+      break;
+      }
+    else if(leftdist > sideDistMax){
       // go back & left
+      break;
+    }
     else{
-      //go back
+      //
+      break;
     }
   }
   for (int pos = 180; pos >= 0; pos -= 1) {
