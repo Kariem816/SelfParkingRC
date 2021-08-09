@@ -1,7 +1,21 @@
 #include <Servo.h>
+
 Servo scanservo;
-#define trig 2
-#define echo A1 
+
+const int trig = 13;
+const int echo = A1; 
+const int sideDistMax = 50;
+const int backDistMax = 50;
+
+// motor 1
+const int enA = 2;
+const int inA1 = 3;
+const int inA2 = 4;
+
+// motor 2
+const int enB = 5;
+const int inB1 = 6;
+const int inB2 = 7;
 
 void turnServo(int angle_1, int angle_2, Servo mys){
   for (int pos = angle_1; pos <= angle_2; pos += 1) {
@@ -23,27 +37,37 @@ void servo_scan(int leftangle, float leftdist, int backangle, float backdist, in
   turnServo(0, leftangle, mys);
   delay(60);
   leftdist = realdis(trig, echo);
+  Serial.print("Left distance = ");
+  Serial.println(leftdist);
   turnServo(leftangle, backangle, mys);
   delay(60);
   backdist = realdis(trig, echo);
+  Serial.print("Back distance = ");
+  Serial.println(backdist);
   turnServo(backangle, rightangle, mys);
   delay(60);
   rightdist = realdis(trig, echo);
+  Serial.print("Right distance = ");
+  Serial.println(rightdist);
 }
 
 void setup() {
   scanservo.attach(3);
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
+  Serial.begin(9600);
 }
 
 void loop() {
-  float backdis;
-  float rightdis;
-  float leftdis;
-  servo_scan(45, leftdis, 90, backdis, 135, rightdis, scanservo);
+  float backdist;
+  float rightdist;
+  float leftdist;
+  servo_scan(45, leftdist, 90, backdist, 135, rightdist, scanservo);
   delay(60);
   
+  if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax)
+    // go back
+  else if (
   
   for (int pos = 180; pos >= 0; pos -= 1) {
     scanservo.write(pos);
