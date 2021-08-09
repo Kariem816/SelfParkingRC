@@ -6,6 +6,7 @@ const int trig = 13;
 const int echo = A1; 
 const int sideDistMax = 50;
 const int backDistMax = 50;
+const int Movetime = 1000;
 
 // motor 1
 const int enA = 2;
@@ -62,13 +63,18 @@ void loop() {
   float backdist;
   float rightdist;
   float leftdist;
+  int done = 0;
   servo_scan(45, leftdist, 90, backdist, 135, rightdist, scanservo);
   delay(60);
-  
-  if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax)
-    // go back
-  else if (
-  
+
+  while(done = 0){
+    if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax)
+      // go back
+    else if(backdist < backDistMax)
+      // stop
+      done = 1;
+    else if(rightdist > side
+  }
   for (int pos = 180; pos >= 0; pos -= 1) {
     scanservo.write(pos);
     delay(15);
