@@ -18,13 +18,6 @@ const int enB = 5;
 const int inB1 = 6;
 const int inB2 = 7;
 
-void turnServo(int angle_1, int angle_2, Servo mys){
-  for (int pos = angle_1; pos <= angle_2; pos += 1) {
-      mys.write(pos);
-      delay(15);
-    }
-}
-
 float realdis(int trigpin, int echopin){//ultrasonic function to measure distance 
   digitalWrite(trigpin, HIGH);
   delayMicroseconds(10);
@@ -32,6 +25,17 @@ float realdis(int trigpin, int echopin){//ultrasonic function to measure distanc
   int duration = pulseIn(echopin, HIGH);
   return (duration * 343.0 / 20000.0);
   delay(60);
+}
+
+void move_backwards(int in1,int in2,int en){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  analogWrite(en,255);
+}
+void stop(int in11,int in22,int en1){
+digitalWrite(in11,LOW);
+digitalWrite(in22,LOW);
+digitalWrite(en1,LOW);  
 }
 
 void servo_scan(int leftangle, float leftdist, int backangle, float backdist, int rightangle, float rightdist, Servo mys){//function to set the servo for 3 entered angles to measure each distance 
@@ -57,33 +61,41 @@ void setup() {
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
   Serial.begin(9600);
+  int done = 0;
 }
 
 void loop() {
+  if(done==0){
   float backdist;
   float rightdist;
   float leftdist;
-  int done = 0;
   servo_scan(45, leftdist, 90, backdist, 135, rightdist, scanservo);
   delay(60);
 
   while(done = 0){
     if(rightdist > sideDistMax && leftdist > sideDistMax && backdist > backDistMax)
       // go back
+      move_backwards(inA1,inA2,enA);
+      move_backwards(inB1,inB2,enB);
     else if(backdist < backDistMax){
-      // stop
+      stop(inA1,inA2,enA);
+      stop(inB1,inB2,enB);
       done = 1;
       }
     else if(rightdist > sideDistMax)
       //go back & right
+      move_backwards(inB1,inB2,enB);
+      stop(inA1,inA2,enA);
     else if(leftdist > sideDistMax)
       // go back & left
+      move_backwards(inA1,inA2,enA);
+      stop(inB1,inB2,enB);
     else{
       //go back
+      move_backwards(inA1,inA2,enA);
+      move_backwards(inB1,inB2,enB);
     }
   }
-  for (int pos = 180; pos >= 0; pos -= 1) {
-    scanservo.write(pos);
-    delay(15);
-    }
+  }
+  delay(Movetime);
 }
